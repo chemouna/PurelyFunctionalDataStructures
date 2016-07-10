@@ -1,8 +1,21 @@
+{-# LANGUAGE TemplateHaskell #-}
 module Ch02 where
 
+import Control.Applicative (Applicative(..),(<$>),(<*>))
+import Control.Monad (liftM, liftM2, liftM3)
+import System.Random
+import Data.Foldable (Foldable(..),toList)
+import Data.Traversable (Traversable(..))
+import qualified Data.List as L
+import Data.Vector.fromList
 
+import Test.QuickCheck hiding (elements)
+import Test.QuickCheck.All
+import Test.QuickCheck.Arbitrary
 
--- Exercice 2.2
+-- //================
+--     Exercice 2.2
+-- //================
 
 -- member performs 2d comparison -> improve to do <= d+1 comparison, d = depth of the tree
 
@@ -41,4 +54,24 @@ member3 x t = member3' x t Nothing
           member3' y (Node l v r) m = if y < v then member3' y l m
                                       else member3' y r (Just v)
 
+-- //===============
+--    QuickCheck
+-- //===============
 
+instance (Ord a, Bounded a, Random a, Num a, Arbitrary a) => Arbitrary (BSTree a)  where
+   arbitrary = gen 0 100 where
+      gen :: (Ord a, Num a, Random a) => a -> a -> Gen (BSTree a)
+      gen min max | (max - min) <= 3 = return Empty
+      gen min max = do
+        elt <- choose (min, max)
+        frequency [ (1, return Empty),
+                    (6, liftM3 Node (gen min (elt - 1))
+                            (return elt) (gen (elt + 1) max)) ]
+
+-- prop_member :: [Int] -> Bool
+-- prop_member xs = all (\x -> member x xt) xs
+--   where
+--     xt = fromList xs
+
+return []
+main = $quickCheckAll

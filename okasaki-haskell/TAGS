@@ -4,19 +4,21 @@ module Main Main0,1
 main main4,5
 main main5,6
 
-./Ch02.hs,294
-module Ch02 Ch020,1
-data BSTree BSTree8,9
-data BSTree a = Empty Empty8,9
-data BSTree a = Empty | Node Node8,9
-member member11,12
-member member12,13
-insert insert18,19
-insert insert19,20
-member2 member227,28
-member2 member228,29
-member3 member336,37
-member3 member337,38
+./Ch02.hs,342
+module Ch02 Ch021,2
+data BSTree BSTree21,22
+data BSTree a = Empty Empty21,22
+data BSTree a = Empty | Node Node21,22
+member member24,25
+member member25,26
+insert insert31,32
+insert insert32,33
+member2 member240,41
+member2 member241,42
+member3 member349,50
+member3 member350,51
+instance instance60,61
+main main76,77
 
 ./Setup.hs,15
 main main1,2
