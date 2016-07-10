@@ -1,0 +1,31 @@
+
+./app/Main.hs,52
+module Main Main0,1
+main main4,5
+main main5,6
+
+./Ch02.hs,294
+module Ch02 Ch020,1
+data BSTree BSTree8,9
+data BSTree a = Empty Empty8,9
+data BSTree a = Empty | Node Node8,9
+member member11,12
+member member12,13
+insert insert18,19
+insert insert19,20
+member2 member227,28
+member2 member228,29
+member3 member336,37
+member3 member337,38
+
+./Setup.hs,15
+main main1,2
+
+./src/Lib.hs,65
+module LibLib0,1
+someFunc someFunc4,5
+someFunc someFunc5,6
+
+./test/Spec.hs,30
+main main0,1
+main main1,2
