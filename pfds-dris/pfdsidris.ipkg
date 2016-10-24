@@ -1,0 +1,9 @@
+package pfdsidris
+
+-- pfds-idris
+-- by Mouna Cheikhna
+
+opts = ""
+sourcedir = src
+modules = Pfds.Idris
+
