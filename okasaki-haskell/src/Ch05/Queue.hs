@@ -1,6 +1,8 @@
 module Ch05 where
 
 import Prelude hiding (head, tail)
+import Test.QuickCheck
+import Test.QuickCheck.All
 
 class Queue q where
   empty :: q a
@@ -38,3 +40,7 @@ instance Queue BatchedQueue where
 
 
 -- Queue Tests
+-- applying toList fromList gives back the same list
+prop_toListFromListIdempotent xs = toList (fromList' xs) == xs
+  where fromList' :: [a] -> BatchedQueue a
+        fromList' = fromList
