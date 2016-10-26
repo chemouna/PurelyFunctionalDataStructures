@@ -1,8 +1,11 @@
+{-# LANGUAGE CPP #-}
+
 module Ch05 where
 
 import Prelude hiding (head, tail, length)
 import Test.QuickCheck
 import Test.QuickCheck.All
+import Control.Monad
 import qualified Data.List as List
 
 class Queue q where
@@ -21,9 +24,9 @@ toList :: Queue q  => q a -> [a]
 toList q | isEmpty q = []
          | otherwise = headq q : toList (tailq q)
 
--- Queue
+-- newtype Queue a = Queue [a] deriving (Read, Show)
+
 data BatchedQueue a = BQ [a] [a]
-  deriving (Eq, Show)
 
 checkf [] r = BQ (reverse r) []
 checkf f r = BQ f r
@@ -42,6 +45,21 @@ instance Queue BatchedQueue where
   length (BQ (x:f) []) = 1 + List.length f
   length (BQ (x:f) (y:r)) = 1 + List.length f + 1 + List.length r
 
+showQueue :: (Queue q, Show a) => q a -> String
+showQueue q = show $ (toList q)
+
+instance (Show a) => (BatchedQueue a) where
+  show q = showQueue q
+
+instance (Arbitrary a) => Arbitrary (BatchedQueue a) where
+    arbitrary = (liftM fromList) arbitrary
+
+#if MIN_VERSION_QuickCheck(2,0,0)
+#else
+    coarbitrary (BatchedQueue _ front _ rear) =
+        variant 0 . coarbitrary front . coarbitrary rear
+#endif
+
 -- Queue Tests
 -- applying toList fromList gives back the same list
 prop_toListFromListIdempotent xs = toList (fromList' xs) == xs
@@ -50,5 +68,7 @@ prop_toListFromListIdempotent xs = toList (fromList' xs) == xs
 
 -- | Validates that the length of a queue is the same as the length of the
 --   list generated from the queue.
-prop_length_toList :: BatchedQueue q => q -> Bool
+prop_length_toList :: (Queue q, Eq (q a)) => q a -> Bool
 prop_length_toList q = List.length (toList q) == length q
+  -- where toList' :: BatchedQueue a -> [a]
+  --       toList' = toList
